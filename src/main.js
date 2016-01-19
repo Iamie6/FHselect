@@ -9,6 +9,27 @@
 		root.FHselect=factory();
 }(this, function() {
 	
+	//添加 绑定 事件 
+	function addEvent(obj,sEv,fn){
+		if(obj.addEventListener){
+			obj.addEventListener(sEv,function(ev){
+				var oEvent=ev || event;
+				if(fn.apply(obj,arguments)==false){
+					oEvent.cancelBubble=true;
+					oEvent.preventDefault();
+				}
+			},false);
+		}else{
+			obj.attachEvent('on'+sEv,function(ev){
+				var oEvent=ev || event;
+				if(fn.apply(obj,arguments)==false){
+					oEvent.cancelBubble=true;
+					return false;	
+				}
+			});
+		}
+	}
+
 	//加载在  自定义下拉的样式
 	function loadStyle(href){ 
 		href = trimAll(href);
@@ -34,7 +55,12 @@
 	};
 
 	//
-	
+	function bingChange(select){
+		addEvent(select,"click",);
+	}
+
+	var userMsg = {};
+
 	var FHselect = function(options){
 		options = options || {};
 		this.container = options.container || "";
@@ -62,8 +88,8 @@
 	FHselect.prototype.getBottomData=function(){
 		
 	};
-	FHselect.prototype.getAddData=function(){
-		
+	FHselect.prototype.getMsg=function(){
+		return userMsg;
 	};
 
 	return FHselect;
